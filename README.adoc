@@ -1,0 +1,20 @@
+= 6502CPU シングルボードコンピューター =
+
+== 概要 ==
+* 6502CPUを使用したシングルボードコンピューターです。
+
+image::img/K65-SBC-BOARD.jpg[]
+
+== 特徴 ==
+* Grantさんが公開している 6502コンピューターとアドレスを合わせてありますので、同じソフトが動きます。
+* srcディレクトリにUniversal Monitor (Electrelicさん作)の移植用ソースを添付します。MC6850対応ドライバーを含んでいます。アセンブル済みのhexファイルも添付します。
+** 28C256(256k)タイプのEEPROMへ、IntelHex形式のファイルから書き込んで使用してください。
+** 書き込みの際、TL866CSを使う場合は、以下のように指定してください。
+
+image::img/TL866CS-1.png[]
+
+== 参考 ==
+* Grant's 8-chip (or 7-chip) 6502 computer
+** http://searle.x10host.com/6502/Simple6502.html
+* Universal Monitor (Electrelicさん)
+** https://electrelic.com/electrelic/node/1318
