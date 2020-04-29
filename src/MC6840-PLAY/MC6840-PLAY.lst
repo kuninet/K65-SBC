@@ -1,0 +1,262 @@
+ AS V1.42 Beta [Bld 162] - Source File MC6840-PLAY.asm - Page 1 - 2020/04/29 14時58分02秒
+
+
+       1/       0 :                     ;
+       2/       0 :                     ; MC6840 PLAY
+       3/       0 :                     ;  Universal Minitor for 6502 
+       4/       0 :                     ;
+       5/       0 :                     
+       6/       0 :                     	CPU	6502
+       7/       0 :                     
+       8/       0 : =6502               TARGET:	EQU	"6502"
+       9/       0 :                     
+      10/       0 :                     ;
+      11/       0 :                     ;;; Functions
+      12/       0 :                     low	function	x,(x & 255)
+      13/       0 :                     high	function	x,(x >> 8)
+      14/       0 :                     ;
+      15/       0 : =$FF98              STROUT  EQU        $FF98
+      16/       0 : =$28                PT0     EQU        $28
+      17/       0 :                     ;
+      18/       0 :                     ; MC6840 PTM Address
+      19/       0 :                     ;
+      20/    8030 :                             ORG $8030
+      21/    8030 :                     PTM_CR13  RMB 1
+      22/    8031 :                     PTM_CR2   RMB 1
+      23/    8032 :                     PTM_MSBT1 RMB 1
+      24/    8033 :                     PTM_T1LSB RMB 1
+      25/    8034 :                     PTM_MSBT2 RMB 1
+      26/    8035 :                     PTM_T2LSB RMB 1
+      27/    8036 :                     PTM_MSBT3 RMB 1
+      28/    8037 :                     PTM_T3LSB RMB 1
+      29/    8038 :                     ;
+      30/     200 :                             org $0200
+      31/     200 :                     MAIN:
+      32/     200 :                     
+      33/     200 :                     
+      34/     200 : 20 8B 02                    JSR     PRINT_START
+      35/     203 :                     ;
+      36/     203 : 20 49 02                    JSR     INIT_6840
+      37/     206 :                     ;
+      38/     206 : 20 21 02                    JSR     PLAY
+      39/     209 :                     ;
+      40/     209 : A9 00                       LDA     #$00
+      41/     20B : 8D 32 80                    STA     PTM_MSBT1
+      42/     20E : 8D 33 80                    STA     PTM_T1LSB
+      43/     211 : 8D 34 80                    STA     PTM_MSBT2
+      44/     214 : 8D 35 80                    STA     PTM_T2LSB
+      45/     217 : 8D 36 80                    STA     PTM_MSBT3
+      46/     21A : 8D 37 80                    STA     PTM_T3LSB
+      47/     21D :                     ;
+      48/     21D : 20 97 02                    JSR     PRINT_END
+      49/     220 : 00                          BRK
+      50/     221 :                     ;
+      51/     221 :                     PLAY:
+      52/     221 : A9 08                       LDA     #$8
+      53/     223 : 85 32                       STA     PLAY_CNT
+      54/     225 : A2 00                       LDX     #$00
+      55/     227 : 86 33                       STX     WK_X
+      56/     229 :                     ;
+      57/     229 :                     PLAY_LOOP:
+      58/     229 : 20 31 02                    JSR     SOUND_OUT
+      59/     22C : C6 32                       DEC     PLAY_CNT
+      60/     22E : D0 F9                       BNE     PLAY_LOOP
+ AS V1.42 Beta [Bld 162] - Source File MC6840-PLAY.asm - Page 2 - 2020/04/29 14時58分02秒
+
+
+      61/     230 :                     ;
+      62/     230 : 60                          RTS
+      63/     231 :                     ;
+      64/     231 :                     SOUND_OUT:
+      65/     231 : A6 33                       LDX     WK_X
+      66/     233 : E8                          INX
+      67/     234 : BD A4 02                    LDA     S_DO1,X
+      68/     237 : 8D 34 80                    STA     PTM_MSBT2
+      69/     23A : CA                          DEX
+      70/     23B : BD A4 02                    LDA     S_DO1,X
+      71/     23E : 8D 35 80                    STA     PTM_T2LSB
+      72/     241 : E8                          INX
+      73/     242 : E8                          INX
+      74/     243 : 86 33                       STX     WK_X
+      75/     245 : 20 78 02                    JSR     WAIT
+      76/     248 : 60                          RTS
+      77/     249 :                     ;
+      78/     249 :                     INIT_6840:
+      79/     249 : A9 01                       LDA     #$01
+      80/     24B : 8D 31 80                    STA     PTM_CR2
+      81/     24E : 8D 30 80                    STA     PTM_CR13
+      82/     251 :                     ;
+      83/     251 : A9 FF                       LDA     #$FF
+      84/     253 : 8D 32 80                    STA     PTM_MSBT1
+      85/     256 : 8D 33 80                    STA     PTM_T1LSB
+      86/     259 : 8D 34 80                    STA     PTM_MSBT2
+      87/     25C : 8D 35 80                    STA     PTM_T2LSB
+      88/     25F : 8D 36 80                    STA     PTM_MSBT3
+      89/     262 : 8D 37 80                    STA     PTM_T3LSB
+      90/     265 :                     ;
+      91/     265 : A9 82                       LDA     #$82
+      92/     267 : 8D 31 80                    STA     PTM_CR2
+      93/     26A : AD 30 80                    LDA     PTM_CR13
+      94/     26D : A9 93                       LDA     #$93
+      95/     26F : 8D 31 80                    STA     PTM_CR2
+      96/     272 : A9 82                       LDA     #$82
+      97/     274 : 8D 30 80                    STA     PTM_CR13
+      98/     277 :                     ;
+      99/     277 : 60                          RTS
+     100/     278 :                     ;
+     101/     278 :                     WAIT:
+     102/     278 : A9 FF                       LDA     #$FF
+     103/     27A : 85 30                       STA     TIMER1
+     104/     27C :                     W_LOOP1:
+     105/     27C : A9 FF                       LDA     #$FF
+     106/     27E : 85 31                       STA     TIMER2
+     107/     280 :                     W_LOOP2:
+     108/     280 : EA                          NOP
+     109/     281 : EA                          NOP
+     110/     282 : C6 31                       DEC     TIMER2
+     111/     284 : D0 FA                       BNE     W_LOOP2
+     112/     286 :                     ;
+     113/     286 : C6 30                       DEC     TIMER1
+     114/     288 : D0 F2                       BNE     W_LOOP1
+     115/     28A :                     ;
+     116/     28A : 60                          RTS
+     117/     28B :                     ;
+     118/     28B :                     PRINT_START:
+     119/     28B : A9 B4                       LDA	#low(START_MSG)
+     120/     28D : 85 28                       STA	PT0
+ AS V1.42 Beta [Bld 162] - Source File MC6840-PLAY.asm - Page 3 - 2020/04/29 14時58分02秒
+
+
+     121/     28F : A9 02                       LDA	#high(START_MSG)
+     122/     291 : 85 29                       STA	PT0+1
+     123/     293 : 20 98 FF                    JSR     STROUT
+     124/     296 : 60                          RTS
+     125/     297 :                     ;
+     126/     297 :                     PRINT_END:
+     127/     297 : A9 C1                       LDA	#low(END_MSG)
+     128/     299 : 85 28                       STA	PT0
+     129/     29B : A9 02                       LDA	#high(END_MSG)
+     130/     29D : 85 29                       STA	PT0+1
+     131/     29F : 20 98 FF                    JSR     STROUT
+     132/     2A2 : 60                          RTS
+     133/     2A3 :                     ;
+     134/     2A3 : 00                          BRK   ; PROGRAM END
+     135/     2A4 :                     ;
+     136/     2A4 :                     ; SOUND DEFINE
+     137/     2A4 :                     ;
+     138/     2A4 : C2 0D               S_DO1   FDB  $0DC2
+     139/     2A6 :                     ;S_DO1S  FDB  $0CFC
+     140/     2A6 : 42 0C               S_RE1   FDB  $0C42
+     141/     2A8 :                     ;S_RE1S  FDB  $0B92
+     142/     2A8 : EB 0A               S_MI1   FDB  $0AEB
+     143/     2AA : 4E 0A               S_FA1   FDB  $0A4E
+     144/     2AC :                     ;S_FA1S  FDB  $09BA
+     145/     2AC : 2F 09               S_SO1   FDB  $092F
+     146/     2AE :                     ;S_SO1S  FDB  $08AB
+     147/     2AE : 2E 08               S_RA1   FDB  $082E
+     148/     2B0 :                     ;S_RA1S  FDB  $07B8
+     149/     2B0 : 4A 07               S_SI1   FDB  $074A
+     150/     2B2 : E1 06               S_DO2   FDB  $06E1
+     151/     2B4 :                     ;S_DO2S  FDB  $067E
+     152/     2B4 :                     ;S_RE2   FDB  $0621
+     153/     2B4 :                     ;S_RE2S  FDB  $05C9
+     154/     2B4 :                     ;S_MI2   FDB  $0575
+     155/     2B4 :                     ;S_FA2   FDB  $0527
+     156/     2B4 :                     ;S_FA2S  FDB  $04DD
+     157/     2B4 :                     ;S_SO2   FDB  $0497
+     158/     2B4 :                     ;S_SO2S  FDB  $0455
+     159/     2B4 :                     ;S_RA2   FDB  $0417
+     160/     2B4 :                     ;S_RA2S  FDB  $03DC
+     161/     2B4 :                     ;S_SI2   FDB  $03A5
+     162/     2B4 :                     ;S_DO3   FDB  $0370
+     163/     2B4 :                     ;
+     164/     2B4 :                     
+     165/     2B4 :                     ;
+     166/     2B4 :                     ; MSG DEFINE
+     167/     2B4 :                     ;
+     168/     2B4 : 50 4C 41 59 20 53   START_MSG FCB "PLAY START",$0D,$0A,$00
+                    54 41 52 54 0D 0A 
+                    00                
+     169/     2C1 : 50 4C 41 59 20 45   END_MSG FCB "PLAY END",$0D,$0A,$00
+                    4E 44 0D 0A 00    
+     170/     2CC :                     ;
+     171/     2CC :                     ; WORK AREA
+     172/     2CC :                     ;
+     173/      30 :                             org $30
+     174/      30 :                     ;
+     175/      30 :                     TIMER1  RMB 1
+     176/      31 :                     TIMER2  RMB 1
+     177/      32 :                     ;
+ AS V1.42 Beta [Bld 162] - Source File MC6840-PLAY.asm - Page 4 - 2020/04/29 14時58分02秒
+
+
+     178/      32 :                     PLAY_CNT  RMB 1
+     179/      33 :                     WK_X    RMB 1
+     180/      34 :                     
+     181/      34 :                             END
+ AS V1.42 Beta [Bld 162] - Source File MC6840-PLAY.asm - Page 5 - 2020/04/29 14時58分02秒
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :    x86_64-apple-osx - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - | *CASESENSITIVE :                  0 - |
+*CONSTPI :        3.141592653589793 - | *DATE :                  2020/04/29 - |
+ END_MSG :                      2C1 C | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+ INIT_6840 :                    249 C | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LISTON :                         1 - |
+*MACEXP :                         7 - | *MAIN :                         200 C |
+*MOMCPU :                      6502 - | *MOMCPUNAME :                  6502 - |
+*NESTMAX :                      100 - | *PACKING :                        0 - |
+*PADDING :                        1 - |  PLAY :                         221 C |
+ PLAY_CNT :                      32 C |  PLAY_LOOP :                    229 C |
+ PRINT_END :                    297 C |  PRINT_START :                  28B C |
+ PT0 :                           28 - |  PTM_CR13 :                    8030 C |
+ PTM_CR2 :                     8031 C |  PTM_MSBT1 :                   8032 C |
+ PTM_MSBT2 :                   8034 C |  PTM_MSBT3 :                   8036 C |
+ PTM_T1LSB :                   8033 C |  PTM_T2LSB :                   8035 C |
+ PTM_T3LSB :                   8037 C | *RELAXED :                        0 - |
+ SOUND_OUT :                    231 C |  START_MSG :                    2B4 C |
+ STROUT :                      FF98 - |  S_DO1 :                        2A4 C |
+*S_DO2 :                        2B2 C | *S_FA1 :                        2AA C |
+*S_MI1 :                        2A8 C | *S_RA1 :                        2AE C |
+*S_RE1 :                        2A6 C | *S_SI1 :                        2B0 C |
+*S_SO1 :                        2AC C | *TARGET :                      6502 - |
+*TIME :                 14\-026\-103\-12658\-027\-120\-12202\-025\-089\-110 - |
+ TIMER1 :                        30 C |  TIMER2 :                        31 C |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WAIT :                         278 C |  WK_X :                          33 C |
+ W_LOOP1 :                      27C C |  W_LOOP2 :                      280 C |
+
+     63 symbols
+     37 unused symbols
+
+ AS V1.42 Beta [Bld 162] - Source File MC6840-PLAY.asm - Page 6 - 2020/04/29 14時58分02秒
+
+
+  Defined Functions:
+  ------------------
+
+HIGH                                  | LOW                                  
+
+ AS V1.42 Beta [Bld 162] - Source File MC6840-PLAY.asm - Page 7 - 2020/04/29 14時58分02秒
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.02 seconds assembly time
+
+    182 lines source file
+      3 passes
+      0 errors
+      0 warnings

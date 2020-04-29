@@ -5,9 +5,13 @@
 * ElectrelicさんのUniversal Monitor MC6850(ACIA)対応ソースサンプルとアセンブリ済みHEXファイルです。ROMに焼いてご使用ください。
 * アセンブルするためにはThe Macroassembler ASの最新版が必要です。(Macro Assembler 1.42 Beta [Bld 162]でアセンブリ実績あり)
 
-== SBC-IOのPIAを使ったLEDチカチカ
+== SBC-IOのPIAを使ったLEDチカチカ (LED_BLINK)
 * 6502マイコンとSBC-IOを接続して、PIA経由でLEDチカチカさせるプログラムです。
 ** SBC-IOの外部端子 PA0〜PA7へLEDを接続してお楽しみください。
+
+== SBC-IOのPTMを使ったドレミ演奏 (MC6840-PLAY)
+* 6502マイコンとSBC-IOを接続して、PTMでドレミ演奏するプログラムです。
+** SBC-IOに圧電スピーカー等を接続してお楽しみください。
 
 == URL
 * Universal Monitor (Electrelicさん)

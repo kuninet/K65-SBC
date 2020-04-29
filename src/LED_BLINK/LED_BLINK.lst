@@ -1,0 +1,133 @@
+ AS V1.42 Beta [Bld 162] - Source File LED_BLINK.asm - Page 1 - 2020/04/21 20時31分17秒
+
+
+       1/       0 :                     ;
+       2/       0 :                     ; LED BLINK for SBC-IO(PIA)
+       3/       0 :                     ;   KUNI-NET
+       4/       0 :                     
+       5/       0 :                     
+       6/       0 :                     	CPU	6502
+       7/       0 :                     
+       8/       0 : =6502               TARGET:	EQU	"6502"
+       9/       0 :                     
+      10/       0 :                     ;
+      11/       0 :                     ; PIA ADDRESS
+      12/       0 :                     ;
+      13/       0 : =$8053              PIACTLB         EQU     $8053
+      14/       0 : =$8052              PIADATB         EQU     $8052
+      15/       0 : =$8051              PIACTLA         EQU     $8051
+      16/       0 : =$8050              PIADATA         EQU     $8050
+      17/       0 :                     ;
+      18/       0 : =$30                WORK_AD         EQU     $30
+      19/       0 :                     ;
+      20/     200 :                             ORG     $200
+      21/     200 :                     
+      22/     200 :                     START:
+      23/     200 : 20 1C 02                    JSR PIA_INIT
+      24/     203 : A9 20                       LDA     #$20
+      25/     205 : 85 30                       STA     CNT
+      26/     207 :                     LED_LOOP:
+      27/     207 : A9 55                       LDA     #$55
+      28/     209 : 8D 50 80                    STA     PIADATA
+      29/     20C : 20 37 02                    JSR     WAIT
+      30/     20F : A9 AA                       LDA     #$AA
+      31/     211 : 8D 50 80                    STA     PIADATA
+      32/     214 : 20 37 02                    JSR     WAIT
+      33/     217 : C6 30                       DEC     CNT
+      34/     219 : D0 EC                       BNE     LED_LOOP
+      35/     21B :                     ;
+      36/     21B : 00                          BRK
+      37/     21C :                     ;
+      38/     21C :                     ; PIA INIT
+      39/     21C :                     ;
+      40/     21C :                     PIA_INIT:
+      41/     21C : A9 00                       LDA     #$00
+      42/     21E : 8D 51 80                    STA     PIACTLA
+      43/     221 : 8D 53 80                    STA     PIACTLB
+      44/     224 : A9 FF                       LDA     #$FF
+      45/     226 : 8D 50 80                    STA     PIADATA
+      46/     229 : A9 00                       LDA     #$00
+      47/     22B : 8D 52 80                    STA     PIADATB
+      48/     22E : A9 04                       LDA     #$04
+      49/     230 : 8D 51 80                    STA     PIACTLA
+      50/     233 : 8D 53 80                    STA     PIACTLB
+      51/     236 : 60                          RTS
+      52/     237 :                     ;
+      53/     237 :                     ; WAIT
+      54/     237 :                     ;
+      55/     237 :                     WAIT:
+      56/     237 : A9 FF                       LDA     #$FF
+      57/     239 : 85 31                       STA     WAIT_CNT
+      58/     23B :                     WAIT_LOOP:
+      59/     23B : 20 43 02                    JSR     WAIT2
+      60/     23E : C6 31                       DEC     WAIT_CNT
+ AS V1.42 Beta [Bld 162] - Source File LED_BLINK.asm - Page 2 - 2020/04/21 20時31分17秒
+
+
+      61/     240 : D0 F9                       BNE     WAIT_LOOP        
+      62/     242 : 60                          RTS
+      63/     243 :                     ;
+      64/     243 :                     WAIT2:
+      65/     243 : A9 FF                       LDA     #$FF
+      66/     245 : 85 32                       STA     WAIT_CNT2
+      67/     247 :                     WAIT2_LOOP:
+      68/     247 : C6 32                       DEC     WAIT_CNT2
+      69/     249 : D0 FC                       BNE     WAIT2_LOOP
+      70/     24B : 60                          RTS
+      71/     24C :                     ;
+      72/     24C :                     ; WORK AREA
+      73/     24C :                     ;
+      74/      30 :                             ORG WORK_AD
+      75/      30 :                     CNT:	RMB	1		; COUNTER
+      76/      31 :                     WAIT_CNT:   RMB     1               ; WAIT COUNTER
+      77/      32 :                     WAIT_CNT2:   RMB     1               ; WAIT COUNTER
+      78/      33 :                     WAIT_CNT3:   RMB     1               ; WAIT COUNTER
+ AS V1.42 Beta [Bld 162] - Source File LED_BLINK.asm - Page 3 - 2020/04/21 20時31分17秒
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :    x86_64-apple-osx - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - | *CASESENSITIVE :                  0 - |
+ CNT :                           30 C | *CONSTPI :        3.141592653589793 - |
+*DATE :                  2020/04/21 - | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+ LED_LOOP :                     207 C | *LISTON :                         1 - |
+*MACEXP :                         7 - | *MOMCPU :                      6502 - |
+*MOMCPUNAME :                  6502 - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ PIACTLA :                     8051 - |  PIACTLB :                     8053 - |
+ PIADATA :                     8050 - |  PIADATB :                     8052 - |
+ PIA_INIT :                     21C C | *RELAXED :                        0 - |
+*START :                        200 C | *TARGET :                      6502 - |
+*TIME :                 20\-026\-103\-12631\-027\-120\-12216\-025\-089\-110 - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WAIT :                         237 C |  WAIT2 :                        243 C |
+ WAIT2_LOOP :                   247 C |  WAIT_CNT :                      31 C |
+ WAIT_CNT2 :                     32 C | *WAIT_CNT3 :                     33 C |
+ WAIT_LOOP :                    23B C |  WORK_AD :                       30 - |
+
+     45 symbols
+     31 unused symbols
+
+ AS V1.42 Beta [Bld 162] - Source File LED_BLINK.asm - Page 4 - 2020/04/21 20時31分17秒
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.33 seconds assembly time
+
+     78 lines source file
+      3 passes
+      0 errors
+      0 warnings
