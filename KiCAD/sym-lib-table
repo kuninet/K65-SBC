@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name 65xx)(type Legacy)(uri ${KIPRJMOD}/6502-kicad-library/65xx.lib)(options "")(descr ""))
+  (lib (name K65-SBC-rescue)(type Legacy)(uri ${KIPRJMOD}/K65-SBC-rescue.lib)(options "")(descr ""))
 )

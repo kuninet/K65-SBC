@@ -1,0 +1,267 @@
+ AS V1.42 Beta [Bld 162] - Source File YM2151-PLAY.asm - Page 1 - 2020/05/05 21時15分44秒
+
+
+       1/       0 :                     ;
+       2/       0 :                     ; YM2151 PLAY
+       3/       0 :                     ;  Universal Minitor for 6502 & SBC68toSBC80 Adapter
+       4/       0 :                     ;
+       5/       0 :                     
+       6/       0 :                     	CPU	6502
+       7/       0 :                     
+       8/       0 : =6502               TARGET:	EQU	"6502"
+       9/       0 :                     
+      10/       0 :                     ;
+      11/       0 :                     ;;; Functions
+      12/       0 :                     low	function	x,(x & 255)
+      13/       0 :                     high	function	x,(x >> 8)
+      14/       0 :                     ;
+      15/       0 :                     ;
+      16/       0 : =$1000              MUSIC       EQU     $1000
+      17/       0 : =$8040              OPM_ADDR    EQU     $8040
+      18/       0 : =$8041              OPM_DATA    EQU     $8041
+      19/       0 :                     
+      20/       0 :                     ;
+      21/     200 :                             org $0200
+      22/     200 :                     MAIN:
+      23/     200 : A9 00                       LDA     #low(MUSIC)
+      24/     202 : 85 30                       STA     MUSIC_PTR
+      25/     204 : A9 10                       LDA     #high(MUSIC)
+      26/     206 : 85 31                       STA     MUSIC_PTR+1
+      27/     208 :                     LOOP:
+      28/     208 : A0 00                       LDY     #0
+      29/     20A : B1 30                       LDA     (MUSIC_PTR),Y
+      30/     20C : C9 54                       CMP     #$54
+      31/     20E : F0 22                       BEQ     PLAY
+      32/     210 : C9 61                       CMP     #$61
+      33/     212 : F0 2F                       BEQ     WAIT1_S
+      34/     214 : C9 62                       CMP     #$62
+      35/     216 : F0 41                       BEQ     WAIT2_S
+      36/     218 : C9 63                       CMP     #$63
+      37/     21A : F0 4B                       BEQ     WAIT3_S
+      38/     21C : C9 64                       CMP     #$64
+      39/     21E : F0 47                       BEQ     WAIT3_S
+      40/     220 : C9 66                       CMP     #$66
+      41/     222 : F0 0D                       BEQ     END_RTN
+      42/     224 :                     ;
+      43/     224 : C9 70                       CMP     #$70
+      44/     226 : F0 51                       BEQ     WAIT4_S
+      45/     228 : 4C 75 02                    JMP     CHK_WAIT_S
+      46/     22B :                     ;
+      47/     22B :                     NEXT:
+      48/     22B : 20 35 02                    JSR     ADD_PTR
+      49/     22E : 4C 08 02                    JMP     LOOP
+      50/     231 :                     ;
+      51/     231 :                     END_RTN:
+      52/     231 : 00                          BRK
+      53/     232 :                     ;
+      54/     232 :                     ; SUB ROUTINE JUMP
+      55/     232 :                     ;
+      56/     232 :                     PLAY:
+      57/     232 : 4C AC 02                    JMP     PLAY_S
+      58/     235 :                     ;WAIT1:
+      59/     235 :                     ;        LDX     #2
+      60/     235 :                     ;        JMP     GO_SUB
+ AS V1.42 Beta [Bld 162] - Source File YM2151-PLAY.asm - Page 2 - 2020/05/05 21時15分44秒
+
+
+      61/     235 :                     ;WAIT2:
+      62/     235 :                     ;        LDX     #4
+      63/     235 :                     ;        JMP     GO_SUB
+      64/     235 :                     ;WAIT3:
+      65/     235 :                     ;        LDX     #6
+      66/     235 :                     ;        JMP     GO_SUB
+      67/     235 :                     ;WAIT4:
+      68/     235 :                     ;        LDX     #8
+      69/     235 :                     ;        JMP     GO_SUB
+      70/     235 :                     ;
+      71/     235 :                     ADD_PTR:
+      72/     235 : A9 01                       LDA     #1
+      73/     237 : 18                          CLC
+      74/     238 : 65 30                       ADC     MUSIC_PTR
+      75/     23A : 85 30                       STA     MUSIC_PTR
+      76/     23C : A9 00                       LDA     #0
+      77/     23E : 65 31                       ADC     MUSIC_PTR+1
+      78/     240 : 85 31                       STA     MUSIC_PTR+1
+      79/     242 : 60                          RTS
+      80/     243 :                     WAIT1_S:
+      81/     243 : C8                          INY
+      82/     244 : B1 30                       LDA     (MUSIC_PTR),Y
+      83/     246 : 85 34                       STA     WAIT_CNT
+      84/     248 : C8                          INY
+      85/     249 : B1 30                       LDA     (MUSIC_PTR),Y
+      86/     24B : 85 35                       STA     WAIT_CNT+1
+      87/     24D : 20 8A 02                    JSR     WAIT
+      88/     250 : 20 35 02                    JSR     ADD_PTR
+      89/     253 : 20 35 02                    JSR     ADD_PTR
+      90/     256 : 4C 2B 02                    JMP     NEXT
+      91/     259 :                     ;
+      92/     259 :                     WAIT2_S:
+      93/     259 : A9 DF                       LDA     #low(735)
+      94/     25B : 85 34                       STA     WAIT_CNT
+      95/     25D : A9 02                       LDA     #high(735)
+      96/     25F : 85 35                       STA     WAIT_CNT+1
+      97/     261 : 20 8A 02                    JSR     WAIT
+      98/     264 : 4C 2B 02                    JMP     NEXT
+      99/     267 :                     ;
+     100/     267 :                     WAIT3_S:
+     101/     267 : A9 72                       LDA     #low(882)
+     102/     269 : 85 34                       STA     WAIT_CNT
+     103/     26B : A9 03                       LDA     #high(882)
+     104/     26D : 85 35                       STA     WAIT_CNT+1
+     105/     26F : 20 8A 02                    JSR    WAIT
+     106/     272 : 4C 2B 02                    JMP     NEXT
+     107/     275 :                     ;
+     108/     275 :                     CHK_WAIT_S:
+     109/     275 : C9 80                       CMP     #$80
+     110/     277 : B0 0E                       BCS     WAIT4_EXIT
+     111/     279 :                     WAIT4_S:
+     112/     279 : 29 0F                       AND     #$0F
+     113/     27B : 18                          CLC
+     114/     27C : 69 01                       ADC     #1
+     115/     27E : 85 34                       STA     WAIT_CNT
+     116/     280 : A9 00                       LDA     #0
+     117/     282 : 85 35                       STA     WAIT_CNT+1
+     118/     284 : 20 8A 02                    JSR    WAIT
+     119/     287 :                     WAIT4_EXIT:
+     120/     287 : 4C 2B 02                    JMP     NEXT
+ AS V1.42 Beta [Bld 162] - Source File YM2151-PLAY.asm - Page 3 - 2020/05/05 21時15分44秒
+
+
+     121/     28A :                     ;
+     122/     28A :                     WAIT:
+     123/     28A : 20 A1 02                    JSR     WAIT_1MS
+     124/     28D : 38                          SEC
+     125/     28E : A5 34                       LDA     WAIT_CNT
+     126/     290 : E9 01                       SBC     #1
+     127/     292 : 85 34                       STA     WAIT_CNT
+     128/     294 : A5 35                       LDA     WAIT_CNT+1
+     129/     296 : E9 00                       SBC     #0
+     130/     298 : 85 35                       STA     WAIT_CNT+1
+     131/     29A :                     ;
+     132/     29A : A5 34                       LDA     WAIT_CNT
+     133/     29C : C5 35                       CMP     WAIT_CNT+1
+     134/     29E : D0 EA                       BNE     WAIT
+     135/     2A0 :                     WAIT_EXIT:
+     136/     2A0 : 60                          RTS
+     137/     2A1 :                     WAIT_1MS:
+     138/     2A1 : A9 E0                       LDA     #$E0
+     139/     2A3 : 85 36                       STA     WAIT_1MS_CNT
+     140/     2A5 :                     WAIT_1MS_LOOP:
+     141/     2A5 : C6 36                       DEC     WAIT_1MS_CNT
+     142/     2A7 : EA                          NOP
+     143/     2A8 : EA                          NOP
+     144/     2A9 : D0 FA                       BNE     WAIT_1MS_LOOP
+     145/     2AB : 60                          RTS
+     146/     2AC :                     ;
+     147/     2AC :                     ;
+     148/     2AC :                     PLAY_S:
+     149/     2AC : C8                          INY
+     150/     2AD : B1 30                       LDA     (MUSIC_PTR),Y
+     151/     2AF : 85 32                       STA     WK_ADDR
+     152/     2B1 : C8                          INY
+     153/     2B2 : B1 30                       LDA     (MUSIC_PTR),Y
+     154/     2B4 : 85 33                       STA     WK_DATA
+     155/     2B6 :                     ;
+     156/     2B6 :                     WRITE_OPM
+     157/     2B6 : AD 41 80                    LDA     OPM_DATA
+     158/     2B9 : C9 80                       CMP     #$80
+     159/     2BB : F0 F9                       BEQ     WRITE_OPM
+     160/     2BD :                     ;
+     161/     2BD : A5 32                       LDA     WK_ADDR
+     162/     2BF : 8D 40 80                    STA     OPM_ADDR
+     163/     2C2 : EA                          NOP
+     164/     2C3 : EA                          NOP        
+     165/     2C4 : EA                          NOP
+     166/     2C5 : EA                          NOP     
+     167/     2C6 : A5 33                       LDA     WK_DATA
+     168/     2C8 : 8D 41 80                    STA     OPM_DATA
+     169/     2CB : 20 35 02                    JSR     ADD_PTR
+     170/     2CE : 20 35 02                    JSR     ADD_PTR
+     171/     2D1 : 4C 2B 02                    JMP     NEXT
+     172/     2D4 :                     ;
+     173/     2D4 :                     
+     174/     2D4 :                     ;
+     175/     2D4 :                     SUB_PTR_TBL:
+     176/     2D4 : AC 02                       FDB     PLAY_S
+     177/     2D6 : 43 02                       FDB     WAIT1_S
+     178/     2D8 : 59 02                       FDB     WAIT2_S
+     179/     2DA : 67 02                       FDB     WAIT3_S
+     180/     2DC : 79 02                       FDB     WAIT4_S
+ AS V1.42 Beta [Bld 162] - Source File YM2151-PLAY.asm - Page 4 - 2020/05/05 21時15分44秒
+
+
+     181/     2DE :                     ;
+     182/     2DE :                     ; Work Area
+     183/     2DE :                     ;
+     184/      30 :                             org  $30
+     185/      30 :                     MUSIC_PTR RMB 2
+     186/      32 :                     WK_ADDR  RMB 1
+     187/      33 :                     WK_DATA  RMB 1
+     188/      34 :                     WAIT_CNT RMB 2
+     189/      36 :                     WAIT_1MS_CNT RMB 1
+     190/      37 : D4 02               SUB_PTR  FDB    SUB_PTR_TBL
+     191/      39 :                     ;
+     192/      39 :                             END
+ AS V1.42 Beta [Bld 162] - Source File YM2151-PLAY.asm - Page 5 - 2020/05/05 21時15分44秒
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+ ADD_PTR :                      235 C | *ARCHITECTURE :    x86_64-apple-osx - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - |  CHK_WAIT_S :                   275 C |
+*CONSTPI :        3.141592653589793 - | *DATE :                  2020/05/05 - |
+ END_RTN :                      231 C | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+*LISTON :                         1 - |  LOOP :                         208 C |
+*MACEXP :                         7 - | *MAIN :                         200 C |
+*MOMCPU :                      6502 - | *MOMCPUNAME :                  6502 - |
+ MUSIC :                       1000 - |  MUSIC_PTR :                     30 C |
+*NESTMAX :                      100 - |  NEXT :                         22B C |
+ OPM_ADDR :                    8040 - |  OPM_DATA :                    8041 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ PLAY :                         232 C |  PLAY_S :                       2AC C |
+*RELAXED :                        0 - | *SUB_PTR :                       37 C |
+ SUB_PTR_TBL :                  2D4 C | *TARGET :                      6502 - |
+*TIME :                 21\-026\-103\-12615\-027\-120\-12243\-025\-089\-110 - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WAIT :                         28A C |  WAIT1_S :                      243 C |
+ WAIT2_S :                      259 C |  WAIT3_S :                      267 C |
+ WAIT4_EXIT :                   287 C |  WAIT4_S :                      279 C |
+ WAIT_1MS :                     2A1 C |  WAIT_1MS_CNT :                  36 C |
+ WAIT_1MS_LOOP :                2A5 C |  WAIT_CNT :                      34 C |
+*WAIT_EXIT :                    2A0 C |  WK_ADDR :                       32 C |
+ WK_DATA :                       33 C |  WRITE_OPM :                    2B6 C |
+
+     57 symbols
+     32 unused symbols
+
+ AS V1.42 Beta [Bld 162] - Source File YM2151-PLAY.asm - Page 6 - 2020/05/05 21時15分44秒
+
+
+  Defined Functions:
+  ------------------
+
+HIGH                                  | LOW                                  
+
+ AS V1.42 Beta [Bld 162] - Source File YM2151-PLAY.asm - Page 7 - 2020/05/05 21時15分44秒
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.22 seconds assembly time
+
+    193 lines source file
+      3 passes
+      0 errors
+      0 warnings
