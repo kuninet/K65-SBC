@@ -15,7 +15,7 @@ image::img/K65-SBC-BOARD.jpg[]
 
 * srcディレクトリにUniversal Monitor (Electrelicさん作)の移植用ソースを添付します。MC6850対応ドライバーを含んでいます。アセンブル済みのhexファイルも添付します。
 ** 28C256(256k)タイプのEEPROMへ、IntelHex形式のファイルから書き込んで使用してください。
-** 書き込みの際、TL866CSを使う場合は、以下のように指定してください。
+** 書き込みの際、TL866CSを使う場合は、以下のように$Fxxxは$7xxxへ読み替える指定をしてください。
 
 image::img/TL866CS-1.png[]
 
