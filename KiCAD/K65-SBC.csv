@@ -1,34 +1,38 @@
 Reference, Value, Footprint, Datasheet
-"R2","1M","","~"
-"R3","1k","","~"
-"C6","22p","","~"
-"C7","22p","","~"
-"Y1","7.3728MHz","","~"
-"U7","74HC04","","https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
-"U6","74HC74","","74xx/74hc_hct74.pdf"
-"C8","0.1u","","~"
-"C9","0.1u","","~"
-"D1","1N4418","","~"
-"C5","10u","","~"
-"R1","4.7k","","~"
-"SW1","RESET","","~"
-"U1","28C256","","http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf"
-"U2","62256","","http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf"
-"U5","74HC00","","http://www.ti.com/lit/gpn/sn74hc00"
-"C10","0.1u","","~"
-"U3","MC6850","Package_DIP:DIP-40_W15.24mm","http://pdf.datasheetcatalog.com/datasheet/motorola/MC6850.pdf"
-"J1","SERIAL CON","","~"
-"RN3","10k","Resistor_THT:R_Array_SIP9","http://www.vishay.com/docs/31509/csc.pdf"
-"RN2","10k","Resistor_THT:R_Array_SIP9","http://www.vishay.com/docs/31509/csc.pdf"
-"J2","SBC6303 BUS","","~"
-"RN1","10k","Resistor_THT:R_Array_SIP5","http://www.vishay.com/docs/31509/csc.pdf"
-"C1","0.1u","","~"
-"U4","W65C02SxP","","http://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf"
-"C2","0.1u","","~"
-"C3","0.1u","","~"
-"C4","0.1u","","~"
-"J3","DC JACK","","~"
-"C11","10u","","~"
-"D2","POWER LED","","~"
-"R4","470","","~"
-"SW2","SW_SPST","","~"
+C1,0.1u,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C11,10u,Capacitor_THT:CP_Radial_D5.0mm_P2.50mm,~
+C2,0.1u,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C3,0.1u,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C4,0.1u,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C5,10u,Capacitor_THT:CP_Radial_D5.0mm_P2.50mm,~
+C6,22p,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C7,22p,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C8,0.1u,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C9,0.1u,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+C10,0.1u,Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm,~
+D1,1N4418,Diode_THT:D_DO-34_SOD68_P10.16mm_Horizontal,~
+D2,POWER LED,LED_THT:LED_D3.0mm,~
+H1,MountingHole,MountingHole:MountingHole_3.2mm_M3,~
+H2,MountingHole,MountingHole:MountingHole_3.2mm_M3,~
+H3,MountingHole,MountingHole:MountingHole_3.2mm_M3,~
+H4,MountingHole,MountingHole:MountingHole_3.2mm_M3,~
+J1,SERIAL CON,Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal,~
+J2,SBC6303 BUS,Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Horizontal,~
+J3,DC JACK,Connector_BarrelJack:BarrelJack_Horizontal,~
+R1,4.7k,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,~
+R2,1M,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,~
+R3,1k,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,~
+R4,470,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,~
+RN1,10k,Resistor_THT:R_Array_SIP5,http://www.vishay.com/docs/31509/csc.pdf
+RN2,10k,Resistor_THT:R_Array_SIP9,http://www.vishay.com/docs/31509/csc.pdf
+RN3,10k,Resistor_THT:R_Array_SIP9,http://www.vishay.com/docs/31509/csc.pdf
+SW1,RESET,Button_Switch_THT:SW_PUSH_6mm,~
+SW2,POWER SW,Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical,~
+U1,28C256,Package_TO_SOT_THT:TO-92_Inline_Wide,http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf
+U2,62256,Package_DIP:DIP-28_W15.24mm_Socket_LongPads,http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf
+U3,MC6850,Package_DIP:DIP-24_W15.24mm_Socket_LongPads,http://pdf.datasheetcatalog.com/datasheet/motorola/MC6850.pdf
+U4,W65C02SxP,Package_DIP:DIP-40_W15.24mm_Socket_LongPads,http://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf
+U5,74HC00,Package_DIP:DIP-14_W7.62mm_Socket_LongPads,http://www.ti.com/lit/gpn/sn74hc00
+U6,74HC74,Package_DIP:DIP-14_W7.62mm_Socket_LongPads,74xx/74hc_hct74.pdf
+U7,74HC04,Package_DIP:DIP-14_W7.62mm_Socket_LongPads,https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf
+Y1,7.3728MHz,Crystal:Crystal_HC50_Vertical,~
